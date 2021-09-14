@@ -17,18 +17,19 @@ const HistoryLoader = () => {
 
 
     const keywords = history.map(data => data.keyword)
+    const users = [... new Set(history.map(data => data.user))]
     const keywordCounts = {}
     for (let i = 0; i < keywords.length; i++) {
         keywordCounts[keywords[i]] = 1 + (keywordCounts[keywords[i]] || 0)
     }
 
-    let dummy = []
+    let countedKeywords = []
     for (const key in keywordCounts) {
         let obj = {
             name: key,
             value: keywordCounts[key]
         }
-        dummy.push(obj)
+        countedKeywords.push(obj)
 
     }
 
@@ -44,18 +45,25 @@ const HistoryLoader = () => {
             setFilteredData([...filteredData, ...result])
         }
 
-
-
-        // const newFilteredData = [...filteredData, ...result]
     }
     console.log(filteredData)
+    console.log(users);
 
     return (
         <div>
             {
-                dummy.map((element, index) => <div key={index}>
+                countedKeywords.map((element, index) => <div key={index}>
                     <input type="checkbox" name={element.name} id="" onClick={selectHandler} />
                     <span>{element.name} : {element.value}</span>
+
+                </div>)
+            }
+            <br />
+            <br />
+            {
+                users.map((user, index) => <div key={index}>
+                    <input type="checkbox" name={user} id="" />
+                    <span>{user}</span>
 
                 </div>)
             }
