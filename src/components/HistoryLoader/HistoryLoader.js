@@ -78,32 +78,37 @@ const HistoryLoader = () => {
         }
         if (event.target.name === "date") {
             const today = moment(new Date()).format('YYYY-MM-DD')
+            if (ycheckbox.current.checked || wcheckbox.current.checked || mcheckbox.current.checked === false) {
+                setTimelapseFiltered([])
+            }
             if (event.target.value === "yesterday") {
 
                 if (ycheckbox.current.checked) {
+                    const yesterday = moment(subDays(new Date(), 1)).format('YYYY-MM-DD')
                     wcheckbox.current.checked = false
-                }
-                const yesterday = moment(subDays(new Date(), 1)).format('YYYY-MM-DD')
-                let searched = timelapseFiltered.some(data => data.created_at >= yesterday && data.created_at <= today)
-                if (searched) {
-                    const removedData = timelapseFiltered.filter(data => data.created_at < yesterday && data.created_at > today)
-                    setTimelapseFiltered(removedData)
-                } else {
+                    mcheckbox.current.checked = false
                     const result = history.filter(data => data.created_at >= yesterday && data.created_at <= today)
-                    setTimelapseFiltered([...timelapseFiltered, ...result])
+                    setTimelapseFiltered(result)
                 }
 
             }
             if (event.target.value === "lastweek") {
-                const lastweek = moment(subDays(new Date(), 7)).format('YYYY-MM-DD')
-                const result = history.filter(data => data.created_at >= lastweek && data.created_at <= today)
-                console.log(result)
+                if (wcheckbox.current.checked) {
+                    const lastweek = moment(subDays(new Date(), 7)).format('YYYY-MM-DD')
+                    ycheckbox.current.checked = false
+                    mcheckbox.current.checked = false
+                    const result = history.filter(data => data.created_at >= lastweek && data.created_at <= today)
+                    setTimelapseFiltered(result)
+                }
             }
             if (event.target.value === "lastmonth") {
-                console.log("hello")
-                const lastmonth = moment(subDays(new Date(), 30)).format('YYYY-MM-DD')
-                const result = history.filter(data => data.created_at >= lastmonth && data.created_at <= today)
-                console.log(result)
+                if (mcheckbox.current.checked) {
+                    const lastmonth = moment(subDays(new Date(), 30)).format('YYYY-MM-DD')
+                    ycheckbox.current.checked = false
+                    wcheckbox.current.checked = false
+                    const result = history.filter(data => data.created_at >= lastmonth && data.created_at <= today)
+                    setTimelapseFiltered(result)
+                }
             }
 
         }
@@ -160,7 +165,7 @@ const HistoryLoader = () => {
                     <input type="checkbox" name="date" value="lastweek" ref={wcheckbox} onClick={selectHandler} />
                     <span>See data from last week</span>
                     <br />
-                    <input type="checkbox" name="date" value="lastmonth" id="lastmonth" onClick={selectHandler} />
+                    <input type="checkbox" name="date" value="lastmonth" ref={mcheckbox} onClick={selectHandler} />
                     <span>See data from last month</span>
                 </div>
                 <div>
@@ -212,6 +217,16 @@ const HistoryLoader = () => {
                         <div style={{ backgroundColor: 'tomato', margin: '2px 0px', color: 'white', padding: '2px' }}>
                             <p>Result : {data.result}</p>
                             <p>User : {data.user}</p>
+                        </div>
+                    </div>)
+                }
+
+                <p>Timelapse Filtered data: count={timelapseFiltered.length}</p>
+                {
+                    timelapseFiltered.map(data => <div key={data.id}>
+                        <div style={{ backgroundColor: 'tomato', margin: '2px 0px', color: 'white', padding: '2px' }}>
+                            <p>Result : {data.result}</p>
+                            <p>Date : {data.created_at}</p>
                         </div>
                     </div>)
                 }
