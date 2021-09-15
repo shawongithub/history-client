@@ -19,6 +19,7 @@ const HistoryLoader = () => {
     const [keywordFiltered, setkeywordFiltered] = useState([])
     const [userFiltered, setuserFiltered] = useState([])
     const [timelapseFiltered, setTimelapseFiltered] = useState([])
+    const [timerangeFiltered, setTimerangeFiltered] = useState([])
 
     const ycheckbox = useRef(null);
     const wcheckbox = useRef(null);
@@ -134,10 +135,10 @@ const HistoryLoader = () => {
         const startDate = moment(selectedDate.start).format('YYYY-MM-DD')
         const endDate = moment(selectedDate.end).format('YYYY-MM-DD')
         const result = history.filter(data => data.created_at >= startDate && data.created_at <= endDate)
+        setTimerangeFiltered(result)
     }
 
 
-    console.log(timelapseFiltered)
     return (
         <div className="container">
             <div className="search-condition">
@@ -225,6 +226,16 @@ const HistoryLoader = () => {
                 {
                     timelapseFiltered.map(data => <div key={data.id}>
                         <div style={{ backgroundColor: 'tomato', margin: '2px 0px', color: 'white', padding: '2px' }}>
+                            <p>Result : {data.result}</p>
+                            <p>Date : {data.created_at}</p>
+                        </div>
+                    </div>)
+                }
+
+                <p>Timerange Filtered data: count={timerangeFiltered.length}</p>
+                {
+                    timerangeFiltered.map(data => <div key={data.id}>
+                        <div style={{ backgroundColor: 'green', margin: '2px 0px', color: 'white', padding: '2px' }}>
                             <p>Result : {data.result}</p>
                             <p>Date : {data.created_at}</p>
                         </div>
