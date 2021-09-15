@@ -25,7 +25,7 @@ const HistoryLoader = () => {
     const wcheckbox = useRef(null);
     const mcheckbox = useRef(null);
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/v1/gethistories/')
+        fetch('https://search-history-qtec.herokuapp.com/api/v1/gethistories/')
             .then(res => res.json())
             .then(data => {
                 setHistory(data)
