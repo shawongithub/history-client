@@ -1,3 +1,21 @@
 .container{
     display: flex;
+    width: 90%;
+    margin: auto;
 }
+
+.search-criteria{
+  
+}
+
+.filtered-result{
+    display: flex;
+}
+
+.range-div button{
+    border: none;
+    cursor: pointer;
+    background-color: purple;
+    color:black;
+}
+

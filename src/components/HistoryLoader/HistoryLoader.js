@@ -141,7 +141,8 @@ const HistoryLoader = () => {
 
     return (
         <div className="container">
-            <div className="search-condition">
+            <div className="search-criteria">
+                <p>Keywords</p>
                 {
                     countedKeywords.map((element, index) => <div key={index}>
                         <input type="checkbox" name="keyword" value={element.name} onClick={selectHandler} />
@@ -149,8 +150,7 @@ const HistoryLoader = () => {
 
                     </div>)
                 }
-                <br />
-                <br />
+                <p>Users</p>
                 {
                     users.map((user, index) => <div key={index}>
                         <input type="checkbox" name="user" value={user} id="" onClick={selectHandler} />
@@ -158,7 +158,7 @@ const HistoryLoader = () => {
 
                     </div>)
                 }
-                <br />
+                <p>Timerange</p>
                 <div>
                     <input type="checkbox" name="date" value="yesterday" ref={ycheckbox} onClick={selectHandler} />
                     <span>See data from yesterday</span>
@@ -169,7 +169,8 @@ const HistoryLoader = () => {
                     <input type="checkbox" name="date" value="lastmonth" ref={mcheckbox} onClick={selectHandler} />
                     <span>See data from last month</span>
                 </div>
-                <div>
+                <p>Custom timerange</p>
+                <div className="range-div">
                     <MuiPickersUtilsProvider utils={DateFnsUtils} >
                         <Grid>
                             <KeyboardDatePicker
@@ -202,45 +203,55 @@ const HistoryLoader = () => {
 
             </div>
             <div className="filtered-result">
-                <p>Keyword Filtered data: count={keywordFiltered.length}</p>
-                {
-                    keywordFiltered.map(data => <div key={data.id}>
-                        <div style={{ backgroundColor: 'lightskyblue', margin: '2px 0px', padding: '2px' }}>
-                            <p>Keyword : {data.keyword}</p>
-                            <p>Result : {data.result}</p>
-                        </div>
+                <div style={{ margin: '0px 10px' }}>
+                    <p>Keyword Filtered data: count={keywordFiltered.length}</p>
+                    {
+                        keywordFiltered.map(data => <div key={data.id}>
+                            <div style={{ backgroundColor: 'purple', color: 'white', margin: '2px 0px', padding: '2px' }}>
+                                <p>Keyword : {data.keyword}</p>
+                                <p>Result : {data.result}</p>
+                            </div>
 
-                    </div>)
-                }
-                <p>User Filtered data: count={userFiltered.length}</p>
-                {
-                    userFiltered.map(data => <div key={data.id}>
-                        <div style={{ backgroundColor: 'tomato', margin: '2px 0px', color: 'white', padding: '2px' }}>
-                            <p>Result : {data.result}</p>
-                            <p>User : {data.user}</p>
-                        </div>
-                    </div>)
-                }
+                        </div>)
+                    }
+                </div>
+                <div style={{ margin: '0px 10px' }}>
+                    <p>User Filtered data: count={userFiltered.length}</p>
+                    {
+                        userFiltered.map(data => <div key={data.id}>
+                            <div style={{ backgroundColor: 'maroon', margin: '2px 0px', color: 'white', padding: '2px' }}>
+                                <p>Result : {data.result}</p>
+                                <p>User : {data.user}</p>
+                            </div>
+                        </div>)
+                    }
+                </div>
+                <div style={{ margin: '0px 10px' }}>
+                    <p>Timelapse Filtered data: count={timelapseFiltered.length}</p>
+                    {
+                        timelapseFiltered.map(data => <div key={data.id}>
+                            <div style={{ backgroundColor: 'tomato', margin: '2px 0px', color: 'white', padding: '2px' }}>
+                                <p>Result : {data.result}</p>
+                                <p>Date : {data.created_at}</p>
+                            </div>
+                        </div>)
+                    }
 
-                <p>Timelapse Filtered data: count={timelapseFiltered.length}</p>
-                {
-                    timelapseFiltered.map(data => <div key={data.id}>
-                        <div style={{ backgroundColor: 'tomato', margin: '2px 0px', color: 'white', padding: '2px' }}>
-                            <p>Result : {data.result}</p>
-                            <p>Date : {data.created_at}</p>
-                        </div>
-                    </div>)
-                }
+                </div>
 
-                <p>Timerange Filtered data: count={timerangeFiltered.length}</p>
-                {
-                    timerangeFiltered.map(data => <div key={data.id}>
-                        <div style={{ backgroundColor: 'green', margin: '2px 0px', color: 'white', padding: '2px' }}>
-                            <p>Result : {data.result}</p>
-                            <p>Date : {data.created_at}</p>
-                        </div>
-                    </div>)
-                }
+                <div style={{ margin: '0px 10px' }}>
+                    <p>Timerange Filtered data: count={timerangeFiltered.length}</p>
+                    {
+                        timerangeFiltered.map(data => <div key={data.id}>
+                            <div style={{ backgroundColor: 'green', margin: '2px 0px', color: 'white', padding: '2px' }}>
+                                <p>Result : {data.result}</p>
+                                <p>Date : {data.created_at}</p>
+                            </div>
+                        </div>)
+                    }
+                </div>
+
+
             </div>
 
         </div>
