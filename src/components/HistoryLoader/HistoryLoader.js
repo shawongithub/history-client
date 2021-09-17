@@ -2,9 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import subDays from 'date-fns/subDays';
 import './HistoryLoader.css'
-
 import { useState, useEffect, useRef } from 'react';
-
+import KeywordsData from '../KeywordsData/KeywordsData'
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -12,9 +11,13 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
+import UsersData from '../UsersData/UsersData';
+import ByTimeData from '../ByTimeData/ByTimeData';
+import TimeRangeData from '../TimeRangeData/TimeRangeData';
 
 
 const HistoryLoader = () => {
+
     const [history, setHistory] = useState([])
     const [keywordFiltered, setkeywordFiltered] = useState([])
     const [userFiltered, setuserFiltered] = useState([])
@@ -67,7 +70,6 @@ const HistoryLoader = () => {
             }
         }
         if (event.target.name === "user") {
-            console.log("clicked")
             let searched = userFiltered.some(data => data.user === event.target.value)
             if (searched) {
                 const removedData = userFiltered.filter(data => data.user !== event.target.value)
@@ -203,55 +205,10 @@ const HistoryLoader = () => {
 
             </div>
             <div className="filtered-result">
-                <div style={{ margin: '0px 10px' }}>
-                    <p>Keyword Filtered data: count={keywordFiltered.length}</p>
-                    {
-                        keywordFiltered.map(data => <div key={data.id}>
-                            <div style={{ backgroundColor: 'purple', color: 'white', margin: '2px 0px', padding: '2px' }}>
-                                <p>Keyword : {data.keyword}</p>
-                                <p>Result : {data.result}</p>
-                            </div>
-
-                        </div>)
-                    }
-                </div>
-                <div style={{ margin: '0px 10px' }}>
-                    <p>User Filtered data: count={userFiltered.length}</p>
-                    {
-                        userFiltered.map(data => <div key={data.id}>
-                            <div style={{ backgroundColor: 'maroon', margin: '2px 0px', color: 'white', padding: '2px' }}>
-                                <p>Result : {data.result}</p>
-                                <p>User : {data.user}</p>
-                            </div>
-                        </div>)
-                    }
-                </div>
-                <div style={{ margin: '0px 10px' }}>
-                    <p>Timelapse Filtered data: count={timelapseFiltered.length}</p>
-                    {
-                        timelapseFiltered.map(data => <div key={data.id}>
-                            <div style={{ backgroundColor: 'tomato', margin: '2px 0px', color: 'white', padding: '2px' }}>
-                                <p>Result : {data.result}</p>
-                                <p>Date : {data.created_at}</p>
-                            </div>
-                        </div>)
-                    }
-
-                </div>
-
-                <div style={{ margin: '0px 10px' }}>
-                    <p>Timerange Filtered data: count={timerangeFiltered.length}</p>
-                    {
-                        timerangeFiltered.map(data => <div key={data.id}>
-                            <div style={{ backgroundColor: 'green', margin: '2px 0px', color: 'white', padding: '2px' }}>
-                                <p>Result : {data.result}</p>
-                                <p>Date : {data.created_at}</p>
-                            </div>
-                        </div>)
-                    }
-                </div>
-
-
+                <KeywordsData keywordFiltered={keywordFiltered} />
+                <UsersData userFiltered={userFiltered} />
+                <ByTimeData timelapseFiltered={timelapseFiltered} />
+                <TimeRangeData timerangeFiltered={timerangeFiltered} />
             </div>
 
         </div>
