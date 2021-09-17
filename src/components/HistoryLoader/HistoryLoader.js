@@ -5,15 +5,11 @@ import './HistoryLoader.css'
 import { useState, useEffect, useRef } from 'react';
 import KeywordsData from '../KeywordsData/KeywordsData'
 import 'date-fns';
-import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-} from '@material-ui/pickers';
+
 import UsersData from '../UsersData/UsersData';
 import ByTimeData from '../ByTimeData/ByTimeData';
 import TimeRangeData from '../TimeRangeData/TimeRangeData';
+import TimeRangeSearch from '../TimeRangeSearch/TimeRangeSearch';
 
 
 const HistoryLoader = () => {
@@ -118,24 +114,9 @@ const HistoryLoader = () => {
 
     }
 
-    const [selectedDate, setSelectedDate] = useState({
-        start: new Date(),
-        end: new Date()
-    });
-
-    const handleCheckInDateChange = (date) => {
-        const newDate = { ...selectedDate }
-        newDate.start = date
-        setSelectedDate(newDate)
-    };
-    const handleCheckOutDateChange = (date) => {
-        const newDate = { ...selectedDate }
-        newDate.end = date
-        setSelectedDate(newDate)
-    };
-    const searchHandler = () => {
-        const startDate = moment(selectedDate.start).format('YYYY-MM-DD')
-        const endDate = moment(selectedDate.end).format('YYYY-MM-DD')
+    const searchHandler = (start, end) => {
+        const startDate = moment(start).format('YYYY-MM-DD')
+        const endDate = moment(end).format('YYYY-MM-DD')
         const result = history.filter(data => data.created_at >= startDate && data.created_at <= endDate)
         setTimerangeFiltered(result)
     }
@@ -171,37 +152,7 @@ const HistoryLoader = () => {
                     <input type="checkbox" name="date" value="lastmonth" ref={mcheckbox} onClick={selectHandler} />
                     <span>See data from last month</span>
                 </div>
-                <p>Custom timerange</p>
-                <div className="range-div">
-                    <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                        <Grid>
-                            <KeyboardDatePicker
-                                margin="normal"
-                                id="date-picker-dialog-start"
-                                label="Start Date"
-                                format="dd/MM/yyyy"
-                                value={selectedDate.start}
-                                onChange={handleCheckInDateChange}
-                                KeyboardButtonProps={{
-                                    'aria-label': 'change date',
-                                }}
-                            />
-                            <KeyboardDatePicker
-                                margin="normal"
-                                id="date-picker-dialog-end"
-                                label="End Date"
-                                format="dd/MM/yyyy"
-                                value={selectedDate.end}
-                                onChange={handleCheckOutDateChange}
-                                KeyboardButtonProps={{
-                                    'aria-label': 'change date',
-                                }}
-                            />
-
-                        </Grid>
-                    </MuiPickersUtilsProvider>
-                    <button onClick={searchHandler}>Search Result</button>
-                </div>
+                <TimeRangeSearch searchHandler={searchHandler} />
 
             </div>
             <div className="filtered-result">
