@@ -11,6 +11,8 @@ import ByTimeData from '../ByTimeData/ByTimeData';
 import TimeRangeData from '../TimeRangeData/TimeRangeData';
 import TimeRangeSearch from '../TimeRangeSearch/TimeRangeSearch';
 import ByTimeSearch from '../ByTimeSearch/ByTimeSearch';
+import KeywordSearch from '../KeywordSearch/KeywordSearch';
+import UserSearch from '../UserSearch/UserSearch';
 
 
 const HistoryLoader = () => {
@@ -53,7 +55,6 @@ const HistoryLoader = () => {
     }
 
     const selectHandler = (event) => {
-
         if (event.target.name === "keyword") {
             let searched = keywordFiltered.some(data => data.keyword === event.target.value)
             if (searched) {
@@ -89,22 +90,8 @@ const HistoryLoader = () => {
     return (
         <div className="container">
             <div className="search-criteria">
-                <p>Keywords</p>
-                {
-                    countedKeywords.map((element, index) => <div key={index}>
-                        <input type="checkbox" name="keyword" value={element.name} onClick={selectHandler} />
-                        <span>{element.name} : {element.value}</span>
-
-                    </div>)
-                }
-                <p>Users</p>
-                {
-                    users.map((user, index) => <div key={index}>
-                        <input type="checkbox" name="user" value={user} id="" onClick={selectHandler} />
-                        <span>{user}</span>
-
-                    </div>)
-                }
+                <KeywordSearch countedKeywords={countedKeywords} selectHandler={selectHandler} />
+                <UserSearch users={users} selectHandler={selectHandler}/>
                 <ByTimeSearch history={history} setDataHandler={setDataHandler} />
                 <TimeRangeSearch searchHandler={searchHandler} />
 
