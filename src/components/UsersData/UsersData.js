@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './UsersData.css'
 const UsersData = props => {
     const dataArray = props.userFiltered
     return (
@@ -7,7 +7,7 @@ const UsersData = props => {
             <p>User Filtered data: count={dataArray.length}</p>
             {
                 dataArray.map(data => <div key={data.id}>
-                    <div style={{ backgroundColor: 'blue', marginBottom: '5px', color: 'white', padding: '5px' }}>
+                    <div className="users-card">
                         <p>Result : {data.result}</p>
                         <p>User : {data.user}</p>
                     </div>
