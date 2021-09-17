@@ -1,8 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-import subDays from 'date-fns/subDays';
+
 import './HistoryLoader.css'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import KeywordsData from '../KeywordsData/KeywordsData'
 import 'date-fns';
 
@@ -10,6 +10,7 @@ import UsersData from '../UsersData/UsersData';
 import ByTimeData from '../ByTimeData/ByTimeData';
 import TimeRangeData from '../TimeRangeData/TimeRangeData';
 import TimeRangeSearch from '../TimeRangeSearch/TimeRangeSearch';
+import ByTimeSearch from '../ByTimeSearch/ByTimeSearch';
 
 
 const HistoryLoader = () => {
@@ -20,9 +21,7 @@ const HistoryLoader = () => {
     const [timelapseFiltered, setTimelapseFiltered] = useState([])
     const [timerangeFiltered, setTimerangeFiltered] = useState([])
 
-    const ycheckbox = useRef(null);
-    const wcheckbox = useRef(null);
-    const mcheckbox = useRef(null);
+
     useEffect(() => {
         fetch('https://search-history-qtec.herokuapp.com/api/v1/gethistories/')
             .then(res => res.json())
@@ -75,43 +74,6 @@ const HistoryLoader = () => {
                 setuserFiltered([...userFiltered, ...result])
             }
         }
-        if (event.target.name === "date") {
-            const today = moment(new Date()).format('YYYY-MM-DD')
-            if (ycheckbox.current.checked || wcheckbox.current.checked || mcheckbox.current.checked === false) {
-                setTimelapseFiltered([])
-            }
-            if (event.target.value === "yesterday") {
-
-                if (ycheckbox.current.checked) {
-                    const yesterday = moment(subDays(new Date(), 1)).format('YYYY-MM-DD')
-                    wcheckbox.current.checked = false
-                    mcheckbox.current.checked = false
-                    const result = history.filter(data => data.created_at >= yesterday && data.created_at <= today)
-                    setTimelapseFiltered(result)
-                }
-
-            }
-            if (event.target.value === "lastweek") {
-                if (wcheckbox.current.checked) {
-                    const lastweek = moment(subDays(new Date(), 7)).format('YYYY-MM-DD')
-                    ycheckbox.current.checked = false
-                    mcheckbox.current.checked = false
-                    const result = history.filter(data => data.created_at >= lastweek && data.created_at <= today)
-                    setTimelapseFiltered(result)
-                }
-            }
-            if (event.target.value === "lastmonth") {
-                if (mcheckbox.current.checked) {
-                    const lastmonth = moment(subDays(new Date(), 30)).format('YYYY-MM-DD')
-                    ycheckbox.current.checked = false
-                    wcheckbox.current.checked = false
-                    const result = history.filter(data => data.created_at >= lastmonth && data.created_at <= today)
-                    setTimelapseFiltered(result)
-                }
-            }
-
-        }
-
     }
 
     const searchHandler = (start, end) => {
@@ -120,7 +82,9 @@ const HistoryLoader = () => {
         const result = history.filter(data => data.created_at >= startDate && data.created_at <= endDate)
         setTimerangeFiltered(result)
     }
-
+    const setDataHandler = result => {
+        setTimelapseFiltered(result)
+    }
 
     return (
         <div className="container">
@@ -141,17 +105,7 @@ const HistoryLoader = () => {
 
                     </div>)
                 }
-                <p>Timerange</p>
-                <div>
-                    <input type="checkbox" name="date" value="yesterday" ref={ycheckbox} onClick={selectHandler} />
-                    <span>See data from yesterday</span>
-                    <br />
-                    <input type="checkbox" name="date" value="lastweek" ref={wcheckbox} onClick={selectHandler} />
-                    <span>See data from last week</span>
-                    <br />
-                    <input type="checkbox" name="date" value="lastmonth" ref={mcheckbox} onClick={selectHandler} />
-                    <span>See data from last month</span>
-                </div>
+                <ByTimeSearch history={history} setDataHandler={setDataHandler} />
                 <TimeRangeSearch searchHandler={searchHandler} />
 
             </div>
